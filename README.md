@@ -13,7 +13,7 @@ First, configure your database schema by associating column names with their typ
 const MY_DB_SCHEMA = {
   Name: 'title',
   Tags: 'multi_select',
-  'Other type': 'select',
+  'Other column': 'select',
 };
 ```
 
@@ -26,7 +26,7 @@ import { buildPageCreate } from 'notion-toolbox';
 const payload = buildPageCreate(MY_DB_SCHEMA, 'my-database-id', {
   Name: 'My new page',
   Tags: ['Tag 1', 'Tag 2'],
-  'Other type': 'Other value',
+  'Other column': 'Other value',
 });
 ```
 
@@ -132,6 +132,7 @@ const propertyValues: string[] = readPageProperty<MyDbColumn>(
 ### Builders
 
 - [ ] sorting for the `database_query` builder
+- [ ] possibility to provide content to the `page_create` builder
 - [ ] new `block_create_children` builder
 - [ ] new `block_delete` builder
 - [ ] new `block_update` builder
@@ -150,7 +151,7 @@ Instead of always providing builders with the schema of the databases we manipul
 Something with an API along the lines of
 
 ```ts
-const myDbWrapper = new DbWrapper('my-database-id', MyDbColumn, MY_DB_SCHEMA);
+const myDbWrapper = new DbWrapper<MyDbColumn>('my-database-id', MY_DB_SCHEMA);
 const payload = myDbWrapper.buildPageCreate({
   [MyDbColumns.Name]: 'My new page',
   [MyDbColumns.Tags]: ['Tag 1', 'Tag 2'],
