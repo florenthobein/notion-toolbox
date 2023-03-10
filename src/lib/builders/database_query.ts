@@ -1,10 +1,16 @@
-import { FilterParam, PropertyFilter, PropertyType } from '../types';
-
+import {
+  FilterParam,
+  FilterPropertyParam,
+  PropertyFilter,
+  PropertyType,
+  FilterParamValue,
+} from '../types';
 import { buildFilter } from './builder.filter';
+import { hasAnd, hasOr, isObject, keyValPairsFromArray } from '../helpers';
 
 export function build<TPropertyName extends string>(
   propertyTypes: Record<TPropertyName, PropertyType>,
-  filter?: FilterParam
+  filter?: FilterParam<TPropertyName>
 ): {
   filter?: { or?: PropertyFilter[]; and?: PropertyFilter[] };
   sorts?: Array<
@@ -29,33 +35,44 @@ export function build<TPropertyName extends string>(
   };
 }
 
+// todo refacto this
 function buildFilterPayload<TPropertyName extends string>(
-  filter: FilterParam,
+  filter: FilterParam<TPropertyName>,
   propertyTypes: Record<TPropertyName, PropertyType>
 ): { or?: PropertyFilter[]; and?: PropertyFilter[] } {
   const defaultOperator = 'and';
-  const hasOr = (
-    q: { or: unknown } | { and: unknown } | PropertyFilter
-  ): q is { or: unknown } => (q as { or: unknown }).or !== undefined;
-  const hasAnd = (
-    q: { or: unknown } | { and: unknown } | PropertyFilter
-  ): q is { and: unknown } => (q as { and: unknown }).and !== undefined;
   let operator: 'and' | 'or';
-  let data: FilterParam | FilterParam[];
-  if (hasOr(filter)) {
+  let keyValPairs: Array<[string, FilterParamValue]>;
+  if (hasOr<FilterPropertyParam<TPropertyName>>(filter)) {
     operator = 'or';
-    data = filter.or;
-  } else if (hasAnd(filter)) {
+    keyValPairs = keyValPairsFromArray(filter.or);
+  } else if (hasAnd<FilterPropertyParam<TPropertyName>>(filter)) {
     operator = 'and';
-    data = filter.and;
+    keyValPairs = keyValPairsFromArray(filter.and);
   } else {
     operator = defaultOperator;
-    data = filter;
+    keyValPairs = Object.entries(filter);
   }
   return {
-    [operator]: Object.entries(data).map(
-      ([propertyName, filterValue]: [string, string | boolean]) =>
-        buildFilter(propertyName as TPropertyName, filterValue, propertyTypes)
+    [operator]: keyValPairs.map(
+      ([propertyName, filterValue]: [string, string | boolean]) => {
+        if (propertyName === 'or' || propertyName === 'and') {
+          return buildFilterPayload(
+            { [propertyName]: filterValue } as FilterParam<TPropertyName>,
+            propertyTypes
+          );
+        }
+        let customFilterCondition;
+        if (isObject(filterValue)) {
+          [[customFilterCondition, filterValue]] = Object.entries(filterValue);
+        }
+        return buildFilter(
+          propertyName as TPropertyName,
+          filterValue,
+          propertyTypes,
+          customFilterCondition
+        );
+      }
     ),
   };
 }

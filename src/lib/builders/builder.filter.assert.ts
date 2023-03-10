@@ -160,6 +160,9 @@ export function assertCoherentCustomFilterCondition(
   customFilterCondition: FilterConditionEnum
 ): void {
   if (!customFilterCondition) return;
+  if (!ALLOWED_FILTER_CONDITIONS[type]) {
+    throw new Error(`Unsupported type ${type}`);
+  }
   if (!ALLOWED_FILTER_CONDITIONS[type].includes(customFilterCondition)) {
     throw new Error(
       `Condition ${customFilterCondition} not allowed to filter type ${type}`

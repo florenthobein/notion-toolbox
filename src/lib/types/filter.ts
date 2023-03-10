@@ -1,29 +1,36 @@
-import { EmptyObject } from './base';
+import { EmptyObject, ParamValue } from './base';
 
-export type FilterParam =
+export type FilterParamValue =
+  | ParamValue
+  | Partial<Record<FilterCondition, ParamValue>>;
+export type FilterPropertyParam<TPropertyName extends string> = Partial<
+  Record<TPropertyName, FilterParamValue>
+>;
+
+export type FilterParam<TPropertyName extends string> =
   | {
       or: Array<
-        | PropertyFilter
+        | FilterPropertyParam<TPropertyName>
         | {
-            or: Array<PropertyFilter>;
+            or: Array<FilterPropertyParam<TPropertyName>>;
           }
         | {
-            and: Array<PropertyFilter>;
+            and: Array<FilterPropertyParam<TPropertyName>>;
           }
       >;
     }
   | {
       and: Array<
-        | PropertyFilter
+        | FilterPropertyParam<TPropertyName>
         | {
-            or: Array<PropertyFilter>;
+            or: Array<FilterPropertyParam<TPropertyName>>;
           }
         | {
-            and: Array<PropertyFilter>;
+            and: Array<FilterPropertyParam<TPropertyName>>;
           }
       >;
     }
-  | PropertyFilter;
+  | FilterPropertyParam<TPropertyName>;
 
 export type FilterCondition =
   | 'after'
@@ -254,17 +261,17 @@ export type PropertyFilter =
   | {
       status:
         | {
-          equals: string;
-        }
+            equals: string;
+          }
         | {
-          does_not_equal: string;
-        }
+            does_not_equal: string;
+          }
         | {
-          is_empty: true;
-        }
+            is_empty: true;
+          }
         | {
-          is_not_empty: true;
-        };
+            is_not_empty: true;
+          };
       property: string;
       type?: 'status';
     }

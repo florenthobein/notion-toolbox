@@ -14,3 +14,13 @@ export function isEmpty(propertyValue: unknown): boolean {
   };
   return valueIsEmpty(propertyValue);
 }
+
+export const isObject = (value: unknown): boolean =>
+  typeof value === 'object' && !Array.isArray(value) && value !== null;
+
+// transforms [{ myCol1: 'value1' }, { myCol2: 'value2' }]
+// into       [['myCol1', 'value1'], ['myCol2', 'value2']]
+export const keyValPairsFromArray = (
+  d: Array<{ [k: string]: unknown }>
+): Array<[string, unknown]> =>
+  d.reduce((acc, item) => [...acc, ...Object.entries(item)], []);
