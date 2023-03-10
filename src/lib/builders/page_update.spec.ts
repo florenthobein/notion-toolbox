@@ -17,6 +17,7 @@ import { fixture as phoneNumberFixture } from '../fixtures/builders/page_update/
 import { fixture as relationFixture } from '../fixtures/builders/page_update/relation';
 import { fixture as richTextFixture } from '../fixtures/builders/page_update/rich_text';
 import { fixture as selectFixture } from '../fixtures/builders/page_update/select';
+import { fixture as statusFixture } from '../fixtures/builders/page_update/status';
 import { fixture as titleFixture } from '../fixtures/builders/page_update/title';
 import { fixture as urlFixture } from '../fixtures/builders/page_update/url';
 import { fixture as withCoverFixture } from '../fixtures/builders/page_update/with_cover';
@@ -38,6 +39,7 @@ describe('> Testing page update builder', () => {
     { name: 'relation', fixture: relationFixture },
     { name: 'rich_text', fixture: richTextFixture },
     { name: 'select', fixture: selectFixture },
+    { name: 'status', fixture: statusFixture },
     { name: 'title', fixture: titleFixture },
     { name: 'url', fixture: urlFixture },
     { name: 'with_cover', fixture: withCoverFixture },

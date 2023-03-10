@@ -252,6 +252,23 @@ export type PropertyFilter =
       type?: 'multi_select';
     }
   | {
+      status:
+        | {
+          equals: string;
+        }
+        | {
+          does_not_equal: string;
+        }
+        | {
+          is_empty: true;
+        }
+        | {
+          is_not_empty: true;
+        };
+      property: string;
+      type?: 'status';
+    }
+  | {
       date:
         | {
             equals: string;

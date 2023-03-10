@@ -125,6 +125,13 @@ export function buildFilter<TPropertyName extends string>(
         },
       } as PropertyFilter;
       break;
+    case 'status':
+      propertyPayload = {
+        status: {
+          [customFilterCondition ?? FilterConditionEnum.equals]: filterValue,
+        },
+      } as PropertyFilter;
+      break;
     case 'title':
       propertyPayload = {
         title: {

@@ -16,6 +16,7 @@ export type PropertyType =
   | 'rich_text'
   | 'rollup'
   | 'select'
+  | 'status'
   | 'title'
   | 'url';
 
@@ -37,6 +38,7 @@ export enum PropertyTypeEnum {
   rich_text = 'rich_text',
   rollup = 'rollup',
   select = 'select',
+  status = 'status',
   title = 'title',
   url = 'url',
 }
@@ -53,6 +55,7 @@ export type PropertyValue =
   | RelationPropertyValue
   | RichTextPropertyValue
   | SelectPropertyValue
+  | StatusPropertyValue
   | TitlePropertyValue
   | UrlPropertyValue;
 
@@ -98,6 +101,10 @@ export interface RichTextPropertyValue {
 
 export interface SelectPropertyValue {
   select: { name: string };
+}
+
+export interface StatusPropertyValue {
+  status: { name: string };
 }
 
 export interface TitlePropertyValue {

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "esnext",
     "outDir": "build/module",
+    "declaration": true,
     "module": "esnext"
   },
   "exclude": [

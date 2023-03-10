@@ -47,6 +47,12 @@ const ALLOWED_FILTER_CONDITIONS: Record<
     FilterConditionEnum.is_empty,
     FilterConditionEnum.is_not_empty,
   ],
+  status: [
+    FilterConditionEnum.equals,
+    FilterConditionEnum.does_not_equal,
+    FilterConditionEnum.is_empty,
+    FilterConditionEnum.is_not_empty,
+  ],
   date: [
     FilterConditionEnum.equals,
     FilterConditionEnum.before,

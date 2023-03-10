@@ -12,6 +12,7 @@ export enum FixtureDB {
   RELATION_COL = 'My relation column',
   RICH_TEXT_COL = 'My rich_text column',
   SELECT_COL = 'My select column',
+  STATUS_COL = 'My status column',
   TITLE_COL = 'My title column',
   URL_COL = 'My url column',
 }
@@ -28,6 +29,7 @@ export const FIXTURE_DB_TYPES: Record<FixtureDB, PropertyTypeEnum> = {
   [FixtureDB.RELATION_COL]: PropertyTypeEnum.relation,
   [FixtureDB.RICH_TEXT_COL]: PropertyTypeEnum.rich_text,
   [FixtureDB.SELECT_COL]: PropertyTypeEnum.select,
+  [FixtureDB.STATUS_COL]: PropertyTypeEnum.status,
   [FixtureDB.TITLE_COL]: PropertyTypeEnum.title,
   [FixtureDB.URL_COL]: PropertyTypeEnum.url,
 };

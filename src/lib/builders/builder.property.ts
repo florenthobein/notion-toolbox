@@ -15,6 +15,7 @@ import {
   RelationPropertyValue,
   RichTextPropertyValue,
   SelectPropertyValue,
+  StatusPropertyValue,
   TitlePropertyValue,
   UrlPropertyValue,
 } from '../types';
@@ -116,6 +117,10 @@ function buildPropertyValue(
       return {
         select: { name: paramValue },
       } as SelectPropertyValue;
+    case 'status':
+      return {
+        status: { name: paramValue },
+      } as StatusPropertyValue;
     case 'title':
       return {
         title: [
