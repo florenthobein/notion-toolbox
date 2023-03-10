@@ -46,6 +46,8 @@ export function readPageProperty<TPropertyName extends string>(
       return null; // automatically calculated
     case 'select':
       return property.select?.name; // string
+    case 'status':
+      return property.status?.name; // string
     case 'url':
       return property.url; // string
     case 'title':

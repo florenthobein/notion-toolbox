@@ -2,6 +2,8 @@
 
 Various tools to easily manipulate Notion's API, to be used with [Notion JS SDK](https://github.com/makenotion/notion-sdk-js), in Typescript.
 
+> 🔥 **Not yet production-ready** 🔥
+
 ## Payload builders
 Easily create type coherent payloads for the complex queries.\
 First, configure your database schema by associating column names with their types.
@@ -51,9 +53,23 @@ const payload = buildPageCreate<MyDbColumn>(MY_DB_SCHEMA, 'my-database-id', {
 });
 ```
 
-### List of available builders
+### `buildDatabaseQuery`
+Build the payload for Notion's [Database Query endpoint](https://developers.notion.com/reference/post-database-query)
 
+### `buildPageCreate`
+Build the payload for Notion's [Page Creation endpoint](https://developers.notion.com/reference/post-page)
 
+### `buildPageUpdate`
+Build the payload for Notion's [Page Update endpoint](https://developers.notion.com/reference/update-a-database)
+
+## Tools
+
+### `readPageProperty`
+When a page is retrieved, use this tool to read one of it's property.
+```ts
+// `myPage` was retrieved from notion a previous API call
+const property: string[] = readPageProperty<MyDbColumn>(myPage, MyDbColumns.Tags, MY_DB_SCHEMA);
+```
 
 ## To do
 - [ ] Test: database_query builder
