@@ -38,19 +38,19 @@ import { buildPageCreate, PropertyType } from 'notion-toolbox';
 enum MyDbColumn {
   Name = 'Name',
   Tags = 'Tags',
-  OtherType = 'Other type',
+  OtherColumn = 'Other column',
 }
 
 const MY_DB_SCHEMA: Record<MyDbColumn, PropertyType> = {
   [MyDbColumn.Name]: 'title',
   [MyDbColumn.Tags]: 'multi_select',
-  [MyDbColumn.OtherType]: 'select',
+  [MyDbColumn.OtherColumn]: 'select',
 };
 
 const payload = buildPageCreate<MyDbColumn>(MY_DB_SCHEMA, 'my-database-id', {
-  [MyDbColumns.Name]: 'My new page',
-  [MyDbColumns.Tags]: ['Tag 1', 'Tag 2'],
-  [MyDbColumns.OtherType]: 'Other value',
+  [MyDbColumn.Name]: 'My new page',
+  [MyDbColumn.Tags]: ['Tag 1', 'Tag 2'],
+  [MyDbColumn.OtherColumn]: 'Other value',
 });
 ```
 
@@ -60,7 +60,7 @@ Build the payload for Notion's [Database Query endpoint](https://developers.noti
 
 ```ts
 const payload = buildDatabaseQuery<MyDbColumn>(MY_DB_SCHEMA, {
-  [MyDbColumns.Tags]: 'Tag 1',
+  [MyDbColumn.Tags]: 'Tag 1',
 });
 await notion.databases.query(payload);
 ```
@@ -69,7 +69,7 @@ The builder is going to use the condition operator that makes more sense by defa
 
 ```ts
 const payload = buildDatabaseQuery<MyDbColumn>(MY_DB_SCHEMA, {
-  [MyDbColumns.Tags]: { is_empty: true },
+  [MyDbColumn.Tags]: { is_empty: true },
 });
 await notion.databases.query(payload);
 ```
@@ -79,9 +79,9 @@ You can also filter with the `or` operand, and combine complex queries.
 ```ts
 const payload = buildDatabaseQuery<MyDbColumn>(MY_DB_SCHEMA, {
   or: [
-    { [MyDbColumns.Tags]: { is_empty: true } },
+    { [MyDbColumn.Tags]: { is_empty: true } },
     {
-      and: [{ [MyDbColumns.Tags]: 'Tag 1' }, { [MyDbColumns.CreatedBy]: 'me' }],
+      and: [{ [MyDbColumn.Tags]: 'Tag 1' }, { [MyDbColumn.CreatedBy]: 'me' }],
     },
   ],
 });
@@ -94,9 +94,9 @@ Build the payload for Notion's [Page Creation endpoint](https://developers.notio
 
 ```ts
 const payload = buildPageCreate<MyDbColumn>(MY_DB_SCHEMA, MY_DB_ID, {
-  [MyDbColumns.Name]: 'My new page',
-  [MyDbColumns.Tags]: ['Tag 1', 'Tag 2'],
-  [MyDbColumns.OtherType]: 'Other value',
+  [MyDbColumn.Name]: 'My new page',
+  [MyDbColumn.Tags]: ['Tag 1', 'Tag 2'],
+  [MyDbColumn.OtherColumn]: 'Other value',
 });
 await notionClient.pages.create(payload);
 ```
@@ -107,7 +107,7 @@ Build the payload for Notion's [Page Update endpoint](https://developers.notion.
 
 ```ts
 const payload = buildPageUpdate<MyDbColumn>(MY_DB_SCHEMA, MY_PAGE_ID, {
-  [MyDbColumns.Name]: 'My other page',
+  [MyDbColumn.Name]: 'My other page',
 });
 await notionClient.pages.update(payload);
 ```
@@ -122,7 +122,7 @@ When a page is retrieved, use this tool to read one of it's property.
 // `myPage` was retrieved from a previous API call
 const propertyValues: string[] = readPageProperty<MyDbColumn>(
   myPage,
-  MyDbColumns.Tags,
+  MyDbColumn.Tags,
   MY_DB_SCHEMA
 );
 ```
@@ -153,9 +153,9 @@ Something with an API along the lines of
 ```ts
 const myDbWrapper = new DbWrapper<MyDbColumn>('my-database-id', MY_DB_SCHEMA);
 const payload = myDbWrapper.buildPageCreate({
-  [MyDbColumns.Name]: 'My new page',
-  [MyDbColumns.Tags]: ['Tag 1', 'Tag 2'],
-  [MyDbColumns.OtherType]: 'Other value',
+  [MyDbColumn.Name]: 'My new page',
+  [MyDbColumn.Tags]: ['Tag 1', 'Tag 2'],
+  [MyDbColumn.OtherColumn]: 'Other value',
 });
 ```
 
@@ -164,7 +164,7 @@ and even
 ```ts
 // `myPage` was retrieved from a previous API call
 const myPageWrapper = myDbWrapper.page(myPage);
-const propertyValues = myPageWrapper.getProperty(MyDbColumns.Tags);
+const propertyValues = myPageWrapper.getProperty(MyDbColumn.Tags);
 ```
 
 ## License
